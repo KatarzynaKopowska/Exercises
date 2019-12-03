@@ -1,18 +1,32 @@
 import requests
+import collections
 
 
-class JobScraper:
+JobOffer = collections.namedtuple(
+    "JobOffer", ("position", "company", "url", "salary", "source"),
+)
 
-    @staticmethod
-    def get_url(URL):
-        r = requests.get(url=URL)
-        data = r.json()
-        return data
 
-    @staticmethod
-    def find_python_job(data, value):
-        for k, v in data.items():
-            if type(v) == str and value in v.lower():
-                return True, data
-            else:
-                pass
+class NoFluffJobsScraper:
+    url = "https://nofluffjobs.com/api/search/posting"
+    data_class = JobOffer
+
+    def get_offers(self):
+        return requests.get(self.url).json()["postings"]
+
+    def parse_offer(self, offer):
+        data = {
+            "position": offer.get("title"),
+            "company": offer.get("name"),
+            "url": offer.get("url"),
+            "source": "nofluffjobs",
+            "salary": "-",
+        }
+
+        return self.data_class(**data)
+
+
+nfjs = NoFluffJobsScraper()
+for offer_data in nfjs.get_offers():
+    offer = nfjs.parse_offer(offer_data)
+    print(offer)
