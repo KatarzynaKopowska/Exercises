@@ -44,16 +44,20 @@ class JustJoinItScraper:
         return self.data_class(**data)
 
 
+class Scraper:
+    scraper_classes = (NoFluffJobsScraper, JustJoinItScraper)
 
-# class Scraper:
-#     scraper_classes = (NoFluffJobsScraper, JustJoinItScraper)
-#
-# jji = JustJoinIt()
-# x = jji.get_offers()
-# print(x)
-# nfjs = NoFluffJobsScraper()
-# y = nfjs.get_offers()
-# print(type(y))
-# # for offer_data in nfjs.get_offers():
-# #     offer = nfjs.parse_offer(offer_data)
-# #     print(offer)
+    def __init__(self):
+        self.offers = []
+
+    def run(self, filter_position=None):
+        for scraper_class in self.scraper_classes:
+            scraper = scraper_class()
+            for offer_data in scraper.get_offers():
+                offer = scraper.parse_offer(offer_data)
+                if filter_position and filter_position in offer.position.lower():
+                    self.offers.append(offer)
+        return self.offers
+
+
+
