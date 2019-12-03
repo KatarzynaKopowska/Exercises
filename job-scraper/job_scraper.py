@@ -34,7 +34,7 @@ class JustJoinItScraper:
         return requests.get(self.url).json()
 
     def parse_offer(self, offer):
-        data = {"position": offer.get("titile"),
+        data = {"position": offer.get("title"),
                 "company": offer.get("company_name"),
                 "salary": "{} - {}".format(offer.get("salary_from"), offer.get("salary_to")),
                 "url": "-",
@@ -60,4 +60,6 @@ class Scraper:
         return self.offers
 
 
+scraper = Scraper()
+scraper.run(filter_position="python")
 
