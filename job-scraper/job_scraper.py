@@ -26,7 +26,34 @@ class NoFluffJobsScraper:
         return self.data_class(**data)
 
 
-nfjs = NoFluffJobsScraper()
-for offer_data in nfjs.get_offers():
-    offer = nfjs.parse_offer(offer_data)
-    print(offer)
+class JustJoinItScraper:
+    url = "https://justjoin.it/api/offers"
+    data_class = JobOffer
+
+    def get_offers(self):
+        return requests.get(self.url).json()
+
+    def parse_offer(self, offer):
+        data = {"position": offer.get("titile"),
+                "company": offer.get("company_name"),
+                "salary": "{} - {}".format(offer.get("salary_from"), offer.get("salary_to")),
+                "url": "-",
+                "source": "justjoinit",
+                }
+
+        return self.data_class(**data)
+
+
+
+# class Scraper:
+#     scraper_classes = (NoFluffJobsScraper, JustJoinItScraper)
+#
+# jji = JustJoinIt()
+# x = jji.get_offers()
+# print(x)
+# nfjs = NoFluffJobsScraper()
+# y = nfjs.get_offers()
+# print(type(y))
+# # for offer_data in nfjs.get_offers():
+# #     offer = nfjs.parse_offer(offer_data)
+# #     print(offer)
