@@ -44,7 +44,7 @@ class JustJoinItScraper:
         return self.data_class(**data)
 
 
-class ServicesScraperManager:
+class Scraper:
     scraper_classes = (NoFluffJobsScraper, JustJoinItScraper)
 
     def __init__(self):
@@ -60,6 +60,6 @@ class ServicesScraperManager:
         return self.offers
 
 
-scraper = ServicesScraperManager()
+scraper = Scraper()
 scraper.run(filter_position="python")
 
