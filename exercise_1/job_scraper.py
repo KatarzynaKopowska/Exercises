@@ -8,14 +8,19 @@ JobOffer = collections.namedtuple(
 
 
 class BaseScraper:
+    """Basic abstraction for services to handle serializing data from service
+      and wrap them around data class.
+      """
     url = None
     data_class = None
 
     def get_offers(self):
-        pass
+        """Get a container of API data from self.url."""
+        raise NotImplementedError
 
     def parse_offer(self, offer):
-        pass
+        """Parse single API data structure into self.data_class."""
+        raise NotImplementedError
 
 
 class NoFluffJobsScraper(BaseScraper):
@@ -68,5 +73,3 @@ class ServicesScraperManager:
                 if filter_position and filter_position in offer.position.lower():
                     self.offers.append(offer)
         return self.offers
-
-
