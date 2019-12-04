@@ -7,7 +7,18 @@ JobOffer = collections.namedtuple(
 )
 
 
-class NoFluffJobsScraper:
+class BaseScraper:
+    url = None
+    data_class = None
+
+    def get_offers(self):
+        pass
+
+    def parse_offer(self, offer):
+        pass
+
+
+class NoFluffJobsScraper(BaseScraper):
     url = "https://nofluffjobs.com/api/search/posting"
     data_class = JobOffer
 
@@ -25,7 +36,7 @@ class NoFluffJobsScraper:
         return self.data_class(**data)
 
 
-class JustJoinItScraper:
+class JustJoinItScraper(BaseScraper):
     url = "https://justjoin.it/api/offers"
     data_class = JobOffer
 
@@ -39,7 +50,7 @@ class JustJoinItScraper:
                 "url": "{}{}".format("https://justjoin.it/offers/", offer.get("id")),
                 "source": "justjoinit",
                 }
-        print(data)
+
         return self.data_class(**data)
 
 
@@ -58,7 +69,4 @@ class ServicesScraperManager:
                     self.offers.append(offer)
         return self.offers
 
-
-scraper = ServicesScraperManager()
-scraper.run(filter_position="python")
 
