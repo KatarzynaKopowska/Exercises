@@ -18,11 +18,10 @@ class NoFluffJobsScraper:
         data = {
             "position": offer.get("title"),
             "company": offer.get("name"),
-            "url": offer.get("url"),
+            "url": "{}{}".format("https://nofluffjobs.com/job/", offer.get("url")),
             "source": "nofluffjobs",
             "salary": "-",
         }
-
         return self.data_class(**data)
 
 
@@ -37,14 +36,14 @@ class JustJoinItScraper:
         data = {"position": offer.get("title"),
                 "company": offer.get("company_name"),
                 "salary": "{} - {}".format(offer.get("salary_from"), offer.get("salary_to")),
-                "url": "-",
+                "url": "{}{}".format("https://justjoin.it/offers/", offer.get("id")),
                 "source": "justjoinit",
                 }
-
+        print(data)
         return self.data_class(**data)
 
 
-class Scraper:
+class ServicesScraperManager:
     scraper_classes = (NoFluffJobsScraper, JustJoinItScraper)
 
     def __init__(self):
@@ -60,6 +59,6 @@ class Scraper:
         return self.offers
 
 
-scraper = Scraper()
+scraper = ServicesScraperManager()
 scraper.run(filter_position="python")
 
