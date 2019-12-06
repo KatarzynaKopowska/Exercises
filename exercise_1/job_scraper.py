@@ -10,7 +10,8 @@ JobOffer = collections.namedtuple(
 class BaseScraper:
     """Basic abstraction for services to handle serializing data from service
       and wrap them around data class.
-      """
+    """
+
     url = None
     data_class = None
 
@@ -55,7 +56,6 @@ class JustJoinItScraper(BaseScraper):
                 "url": "{}{}".format("https://justjoin.it/offers/", offer.get("id")),
                 "source": "justjoinit",
                 }
-
         return self.data_class(**data)
 
 
