@@ -50,12 +50,13 @@ class JustJoinItScraper(BaseScraper):
         return requests.get(self.url).json()
 
     def parse_offer(self, offer):
-        data = {"position": offer.get("title"),
-                "company": offer.get("company_name"),
-                "salary": "{} - {}".format(offer.get("salary_from"), offer.get("salary_to")),
-                "url": "{}{}".format("https://justjoin.it/offers/", offer.get("id")),
-                "source": "justjoinit",
-                }
+        data = {
+            "position": offer.get("title"),
+            "company": offer.get("company_name"),
+            "salary": "{} - {}".format(offer.get("salary_from"), offer.get("salary_to")),
+            "url": "{}{}".format("https://justjoin.it/offers/", offer.get("id")),
+            "source": "justjoinit",
+        }
         return self.data_class(**data)
 
 
