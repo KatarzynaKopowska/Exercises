@@ -1,12 +1,11 @@
 import sys
-from openweather_api_client import BasicWeatherApiClient
+from openweather_api_client import CurrentWeatherApiClient
 
 
 if __name__ == "__main__":
     try:
-        weather = BasicWeatherApiClient()
-        complete_weather = weather.get_weather()
-        current_weather = weather.parse_weather(complete_weather)
+        weather = CurrentWeatherApiClient()
+        current_weather = weather.get_weather(filter='q', value='London', api_key='8141563408c821030aa7cdacd8bd0eff')
     except KeyError:
         print("City not found.")
         sys.exit()

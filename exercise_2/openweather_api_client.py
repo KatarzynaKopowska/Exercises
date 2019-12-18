@@ -11,35 +11,25 @@ class BasicWeatherApiClient:
     """Basic abstraction for services to handle serializing data from service
       and wrap them around data class.
     """
-
-    city = None
-    url = None
     data_class = None
 
-    def get_weather(self):
+    def get_weather(self, filter, value, api_key):
         """Get a container of API data from self.url."""
         pass
 
-    def parse_weather(self, data):
-        """Parse single API data structure into self.data_class."""
-        pass
 
-
-class OpenWeatherApi(BasicWeatherApiClient):
-    city = "wisla"
-    url = "http://api.openweathermap.org/data/2.5/weather?q={}&APPID=bfc7d01991d939f6c91a824036ffcd34".format(city)
+class CurrentWeatherApiClient(BasicWeatherApiClient):
     data_class = WeatherForecast
 
-    def get_weather(self):
-        response = requests.get(self.url).json()
-        return response
-
-    def parse_weather(self, weather):
+    def get_weather(self, filter=None, value=None, api_key=None):
+        url = "http://api.openweathermap.org/data/2.5/weather?{}={}&APPID={}".format(filter, value, api_key)
+        response = requests.get(url).json()
         data = {
-            "city": weather.get("name"),
-            "country": weather["sys"].get("country"),
-            "current_weather": weather["weather"][0].get("main"),
-            "temperature": weather["main"].get("temp"),
-            "pressure": weather["main"].get("pressure"),
+            "city": response.get("name"),
+            "country": response["sys"].get("country"),
+            "current_weather": response["weather"][0].get("main"),
+            "temperature": response["main"].get("temp"),
+            "pressure": response["main"].get("pressure"),
         }
+
         return self.data_class(**data)
