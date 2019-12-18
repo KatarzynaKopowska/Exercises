@@ -1,24 +1,17 @@
-import sys
-from openweather_api_client import CurrentWeatherApiClient
-from openweather_api_client import HourlytWeatherApiClient
+from openweather_api_client import WeatherForecastManager
 
 if __name__ == "__main__":
-    try:
-        weather = CurrentWeatherApiClient()
-        current_weather = weather.get_weather(filter='q', value='London', api_key='8141563408c821030aa7cdacd8bd0eff')
-    except KeyError:
-        print("City not found.")
-        sys.exit()
+    weather_forecast_manager = WeatherForecastManager()
+    weather_forecast = weather_forecast_manager.run(
+        filter="q",
+        value="London",
+        api_key="8141563408c821030aa7cdacd8bd0eff"
+    )
 
-    print(f"Current weather for city: "
-          f"{current_weather.city}, "
-          f"{current_weather.country}: "
-          f"{current_weather.current_weather}, "
-          f"temp: {current_weather.temperature}(°F), "
-          f"pressure: {current_weather.pressure}(hPa)"
-          )
-
-
-    weather1 = HourlytWeatherApiClient()
-    hourly_weather = weather1.get_weather(filter='id', value='524901', api_key='8141563408c821030aa7cdacd8bd0eff')
-    print(hourly_weather)
+    print(f"Weather forecast for city {weather_forecast[0].city}, {weather_forecast[0].country}:")
+    for weather in weather_forecast:
+        print(f"{weather.weather_forecast_type}:".rjust(20, " "),
+              f"{weather.current_weather}, "
+              f"temp: {weather.temperature}(°F), "
+              f"pressure: {weather.pressure}(hPa)"
+              )
