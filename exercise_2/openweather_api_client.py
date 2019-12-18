@@ -13,7 +13,7 @@ class BasicWeatherApiClient:
     data_class = None
 
     def get_weather(self, type, value, api_key):
-        """Get a weather forecast from openweathermap.org .
+        """Get a weather forecast from openweathermap.org.
 
         Parameters:
         type (string): city identification type. Available types:
@@ -81,7 +81,3 @@ class WeatherForecastManager:
             weather = weather_api_client.get_weather(type, value, api_key)
             self.weather_forecast.append(weather)
         return self.weather_forecast
-
-
-
-
