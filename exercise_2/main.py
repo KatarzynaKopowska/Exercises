@@ -3,7 +3,7 @@ from openweather_api_client import WeatherForecastManager
 if __name__ == "__main__":
     weather_forecast_manager = WeatherForecastManager()
     weather_forecast = weather_forecast_manager.run(
-        filter="q",
+        type="q",
         value="London",
         api_key="8141563408c821030aa7cdacd8bd0eff"
     )
