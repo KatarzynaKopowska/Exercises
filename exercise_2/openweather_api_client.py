@@ -35,7 +35,7 @@ class CurrentWeatherApiClient(BasicWeatherApiClient):
         return self.data_class(**data)
 
 
-class HourlytWeatherApiClient(BasicWeatherApiClient):
+class FiveDayForecastApiClient(BasicWeatherApiClient):
     data_class = WeatherForecast
 
     def get_weather(self, filter=None, value=None, api_key=None):
@@ -50,5 +50,5 @@ class HourlytWeatherApiClient(BasicWeatherApiClient):
              "temperature": weather_information["main"].get("temp"),
              "pressure": weather_information["main"].get("pressure"),
         }
-        print(data)
+
         return self.data_class(**data)
