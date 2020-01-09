@@ -1,11 +1,12 @@
 from openweather_api_client import WeatherForecastManager
+import config
 
 if __name__ == "__main__":
     weather_forecast_manager = WeatherForecastManager()
     weather_forecast = weather_forecast_manager.run(
         type="q",
         value="London",
-        api_key="8141563408c821030aa7cdacd8bd0eff"
+        api_key=config.OPENWEATHER_API_KEY
     )
 
     print(f"Weather forecast for city {weather_forecast[0].city}, {weather_forecast[0].country}:")
