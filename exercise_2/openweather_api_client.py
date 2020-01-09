@@ -2,14 +2,13 @@ import requests
 import collections
 
 
+
 WeatherForecast = collections.namedtuple(
     "WeatherForecast", ("weather_forecast_type", "city", "country", "current_weather", "temperature", "pressure")
     )
 
 
 class BasicWeatherApiClient:
-    """
-    """
     data_class = None
 
     def get_weather(self, type, value, api_key):
