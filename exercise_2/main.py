@@ -1,18 +1,18 @@
-from openweather_api_client import WeatherForecastManager
+from openweather_api_client import OpenWeatherAPIClient
 import config
 
-if __name__ == "__main__":
-    weather_forecast_manager = WeatherForecastManager()
-    weather_forecast = weather_forecast_manager.run(
-        type="q",
-        value="London",
-        api_key=config.OPENWEATHER_API_KEY
-    )
 
-    print(f"Weather forecast for city {weather_forecast[0].city}, {weather_forecast[0].country}:")
-    for weather in weather_forecast:
-        print(f"{weather.weather_forecast_type}:".rjust(20, " "),
-              f"{weather.current_weather}, "
-              f"temp: {weather.temperature}(°F), "
-              f"pressure: {weather.pressure}(hPa)"
+if __name__ == "__main__":
+    open_weather_client = OpenWeatherAPIClient(api_key=config.OPENWEATHER_API_KEY)
+    current = open_weather_client.current_weather.get(zip=94040)
+    five_day = open_weather_client.five_day_forecast.get(q='London')
+
+    weather_forecasts = [current, five_day]
+
+    for weather_forecast in weather_forecasts:
+        print(f" {weather_forecast.weather_forecast_type} for city: {weather_forecast.city}, "
+              f"{weather_forecast.country}: "
+              f"{weather_forecast.current_weather}, "
+              f"temp: {weather_forecast.temperature}(°F), "
+              f"pressure: {weather_forecast.pressure}(hPa)"
               )
