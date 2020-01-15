@@ -15,13 +15,17 @@ class OpenWeatherAPIClient:
         self.five_day_forecast = FiveDayForecast(api_key)
 
 
+
 class CurrentWeather:
-    def __init__(self, api_key, **kwargs):
+    def __init__(self, api_key):
         self.api_key = api_key
         self.data_class = WeatherForecast
 
-    def get(self, type, value):
-        url = "http://api.openweathermap.org/data/2.5/weather?{}={}&APPID={}".format(type, value, self.api_key)
+    def get(self, **kwargs):
+        parameters = [(identification_type, value) for identification_type, value in kwargs.items()][0]
+        url = "http://api.openweathermap.org/data/2.5/weather?{}={}&APPID={}".format(
+            parameters[0], parameters[1], self.api_key
+        )
         weather_information = requests.get(url).json()
 
         data = {
@@ -35,12 +39,15 @@ class CurrentWeather:
 
 
 class FiveDayForecast:
-    def __init__(self, api_key, **kwargs):
+    def __init__(self, api_key):
         self.api_key = api_key
         self.data_class = WeatherForecast
 
-    def get(self, type, value):
-        url = "http://api.openweathermap.org/data/2.5/forecast?{}={}&APPID={}".format(type, value, self.api_key)
+    def get(self, **kwargs):
+        parameters = [(identification_type, value) for identification_type, value in kwargs.items()][0]
+        url = "http://api.openweathermap.org/data/2.5/forecast?{}={}&APPID={}".format(
+            parameters[0], parameters[1], self.api_key
+        )
 
         city_information = requests.get(url).json()["city"]
         weather_information = requests.get(url).json()["list"][0]
@@ -55,8 +62,8 @@ class FiveDayForecast:
 
 
 openweather_client = OpenWeatherAPIClient(api_key=config.OPENWEATHER_API_KEY)
-current = openweather_client.current_weather.get('q', 'London')
-five_day = openweather_client.five_day_forecast.get('q', 'London')
+current = openweather_client.current_weather.get(zip=94040)
+five_day = openweather_client.five_day_forecast.get(q='London')
 print(current)
 print(five_day)
 
