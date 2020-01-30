@@ -10,9 +10,14 @@ WeatherForecast = collections.namedtuple(
 class OpenWeatherAPIClient:
     def __init__(self, api_key=None):
         self.api_key = api_key
-        self.current_weather = CurrentWeather(api_key)
-        self.five_day_forecast = FiveDayForecast(api_key)
 
+    @property
+    def current_weather(self):
+        return CurrentWeather(self.api_key)
+
+    @property
+    def five_day_forecast(self):
+        return FiveDayForecast(self.api_key)
 
 class CurrentWeather:
     def __init__(self, api_key):
