@@ -20,14 +20,16 @@ class OpenWeatherAPIClient:
         return FiveDayForecast(self.api_key)
 
 class CurrentWeather:
+    base_url = "http://api.openweathermap.org/data/2.5"
+
     def __init__(self, api_key):
         self.api_key = api_key
         self.data_class = WeatherForecast
 
     def get(self, **kwargs):
         parameters = [(identification_type, value) for identification_type, value in kwargs.items()][0]
-        url = "http://api.openweathermap.org/data/2.5/weather?{}={}&APPID={}".format(
-            parameters[0], parameters[1], self.api_key
+        url = "{}/weather?{}={}&APPID={}".format(
+            self.base_url, parameters[0], parameters[1], self.api_key
         )
         weather_information = requests.get(url).json()
 
@@ -43,14 +45,16 @@ class CurrentWeather:
 
 
 class FiveDayForecast:
+    base_url = "http://api.openweathermap.org/data/2.5"
+
     def __init__(self, api_key):
         self.api_key = api_key
         self.data_class = WeatherForecast
 
     def get(self, **kwargs):
         parameters = [(identification_type, value) for identification_type, value in kwargs.items()][0]
-        url = "http://api.openweathermap.org/data/2.5/forecast?{}={}&APPID={}".format(
-            parameters[0], parameters[1], self.api_key
+        url = "{}/forecast?{}={}&APPID={}".format(
+            self.base_url, parameters[0], parameters[1], self.api_key
         )
 
         city_information = requests.get(url).json()["city"]
