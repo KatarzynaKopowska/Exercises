@@ -19,12 +19,21 @@ class OpenWeatherAPIClient:
     def five_day_forecast(self):
         return FiveDayForecast(self.api_key)
 
-class CurrentWeather:
-    base_url = "http://api.openweathermap.org/data/2.5"
 
-    def __init__(self, api_key):
+class BaseEndpoint:
+    base_url = None
+    data_class = None
+
+    def __init__(self, api_key=None):
         self.api_key = api_key
-        self.data_class = WeatherForecast
+
+    def get(self, **kwargs):
+        raise NotImplementedError
+
+
+class CurrentWeather(BaseEndpoint):
+    base_url = "http://api.openweathermap.org/data/2.5"
+    data_class = WeatherForecast
 
     def get(self, **kwargs):
         parameters = [(identification_type, value) for identification_type, value in kwargs.items()][0]
@@ -44,12 +53,9 @@ class CurrentWeather:
         return self.data_class(**data)
 
 
-class FiveDayForecast:
+class FiveDayForecast(BaseEndpoint):
     base_url = "http://api.openweathermap.org/data/2.5"
-
-    def __init__(self, api_key):
-        self.api_key = api_key
-        self.data_class = WeatherForecast
+    data_class = WeatherForecast
 
     def get(self, **kwargs):
         parameters = [(identification_type, value) for identification_type, value in kwargs.items()][0]
