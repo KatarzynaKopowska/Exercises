@@ -35,6 +35,7 @@ class CurrentWeather(BaseEndpoint):
     base_url = "http://api.openweathermap.org/data/2.5"
     data_class = WeatherForecast
 
+    # Get index [0] from json to get dict values from nested list
     def get(self, **kwargs):
         url = "{}/weather?{}={}&APPID={}".format(
             self.base_url, kwargs, kwargs, self.api_key
@@ -56,13 +57,14 @@ class FiveDayForecast(BaseEndpoint):
     base_url = "http://api.openweathermap.org/data/2.5"
     data_class = WeatherForecast
 
+    # Get index [0] from json to get dict values from nested list
     def get(self, **kwargs):
         url = "{}/forecast?{}={}&APPID={}".format(
             self.base_url, kwargs, kwargs, self.api_key
         )
         city_information = requests.get(url, params=kwargs).json().get("city")
         weather_information = requests.get(url, params=kwargs).json().get("list")[0]
-        
+
         data = {
             "weather_forecast_type": "Five day forecast",
             "city": city_information.get("name"),
