@@ -36,11 +36,10 @@ class CurrentWeather(BaseEndpoint):
     data_class = WeatherForecast
 
     def get(self, **kwargs):
-        parameters = [(identification_type, value) for identification_type, value in kwargs.items()][0]
         url = "{}/weather?{}={}&APPID={}".format(
-            self.base_url, parameters[0], parameters[1], self.api_key
+            self.base_url, kwargs, kwargs, self.api_key
         )
-        weather_information = requests.get(url).json()
+        weather_information = requests.get(url, params=kwargs).json()
 
         data = {
             "weather_forecast_type": "Current weather",
@@ -58,13 +57,12 @@ class FiveDayForecast(BaseEndpoint):
     data_class = WeatherForecast
 
     def get(self, **kwargs):
-        parameters = [(identification_type, value) for identification_type, value in kwargs.items()][0]
         url = "{}/forecast?{}={}&APPID={}".format(
-            self.base_url, parameters[0], parameters[1], self.api_key
+            self.base_url, kwargs, kwargs, self.api_key
         )
 
-        city_information = requests.get(url).json()["city"]
-        weather_information = requests.get(url).json()["list"][0]
+        city_information = requests.get(url, params=kwargs).json()["city"]
+        weather_information = requests.get(url, params=kwargs).json()["list"][0]
         data = {
             "weather_forecast_type": "Five day forecast",
             "city": city_information.get("name"),
