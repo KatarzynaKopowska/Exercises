@@ -44,10 +44,10 @@ class CurrentWeather(BaseEndpoint):
         data = {
             "weather_forecast_type": "Current weather",
             "city": weather_information.get("name"),
-            "country": weather_information["sys"].get("country"),
-            "current_weather": weather_information["weather"][0].get("main"),
-            "temperature": weather_information["main"].get("temp"),
-            "pressure": weather_information["main"].get("pressure"),
+            "country": weather_information.get("sys").get("country"),
+            "current_weather": weather_information.get("weather")[0].get("main"),
+            "temperature": weather_information.get("main").get("temp"),
+            "pressure": weather_information.get("main").get("pressure"),
         }
         return self.data_class(**data)
 
@@ -60,15 +60,15 @@ class FiveDayForecast(BaseEndpoint):
         url = "{}/forecast?{}={}&APPID={}".format(
             self.base_url, kwargs, kwargs, self.api_key
         )
-
-        city_information = requests.get(url, params=kwargs).json()["city"]
-        weather_information = requests.get(url, params=kwargs).json()["list"][0]
+        city_information = requests.get(url, params=kwargs).json().get("city")
+        weather_information = requests.get(url, params=kwargs).json().get("list")[0]
+        
         data = {
             "weather_forecast_type": "Five day forecast",
             "city": city_information.get("name"),
             "country": city_information.get("country"),
-            "current_weather": weather_information["weather"][0].get("main"),
-            "temperature": weather_information["main"].get("temp"),
-            "pressure": weather_information["main"].get("pressure"),
+            "current_weather": weather_information.get("weather")[0].get("main"),
+            "temperature": weather_information.get("main").get("temp"),
+            "pressure": weather_information.get("main").get("pressure"),
         }
         return self.data_class(**data)
