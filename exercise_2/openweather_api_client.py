@@ -35,7 +35,6 @@ class CurrentWeather(BaseEndpoint):
     base_url = "http://api.openweathermap.org/data/2.5"
     data_class = WeatherForecast
 
-    # Get index [0] from json to get dict values from nested list
     def get(self, **kwargs):
         url = "{}/weather?{}={}&APPID={}".format(
             self.base_url, kwargs, kwargs, self.api_key
@@ -46,6 +45,7 @@ class CurrentWeather(BaseEndpoint):
             "weather_forecast_type": "Current weather",
             "city": weather_information.get("name"),
             "country": weather_information.get("sys").get("country"),
+            # "weather" structure returns list with only one element
             "current_weather": weather_information.get("weather")[0].get("main"),
             "temperature": weather_information.get("main").get("temp"),
             "pressure": weather_information.get("main").get("pressure"),
@@ -57,18 +57,19 @@ class FiveDayForecast(BaseEndpoint):
     base_url = "http://api.openweathermap.org/data/2.5"
     data_class = WeatherForecast
 
-    # Get index [0] from json to get dict values from nested list
     def get(self, **kwargs):
         url = "{}/forecast?{}={}&APPID={}".format(
             self.base_url, kwargs, kwargs, self.api_key
         )
         city_information = requests.get(url, params=kwargs).json().get("city")
+        # "weather" structure returns list with only one element
         weather_information = requests.get(url, params=kwargs).json().get("list")[0]
 
         data = {
             "weather_forecast_type": "Five day forecast",
             "city": city_information.get("name"),
             "country": city_information.get("country"),
+            # this structure returns list with only one
             "current_weather": weather_information.get("weather")[0].get("main"),
             "temperature": weather_information.get("main").get("temp"),
             "pressure": weather_information.get("main").get("pressure"),
