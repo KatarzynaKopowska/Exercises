@@ -69,7 +69,7 @@ class FiveDayForecast(BaseEndpoint):
             "weather_forecast_type": "Five day forecast",
             "city": city_information.get("name"),
             "country": city_information.get("country"),
-            # this structure returns list with only one
+            # "weather" structure returns list with only one element
             "current_weather": weather_information.get("weather")[0].get("main"),
             "temperature": weather_information.get("main").get("temp"),
             "pressure": weather_information.get("main").get("pressure"),
